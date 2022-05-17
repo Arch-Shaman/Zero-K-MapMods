@@ -2,9 +2,9 @@
     return {
       name      = "Trollifier: Suicidal Storm Module  v1.2",
       desc      = "A little release as part of the trollifier gadget. Makes units fall from the sky!",
-      author    = "IrishDruid with help from xponen",
-      date      = "Last Thursday",
-      license   = "PINGAS",
+      author    = "Shaman with help from xponen",
+      date      = "November 2013",
+      license   = "CC-0",
       layer     = 5,
       enabled   = true,
     }
