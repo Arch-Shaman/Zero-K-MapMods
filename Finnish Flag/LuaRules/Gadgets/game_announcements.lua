@@ -63,4 +63,8 @@ local function PlaySound(file, vol)
 	SendToUnsynced("playsound", file, vol)
 end
 
+function gadget:GameStart()
+	SendAnnouncement("Warning: Coffee Magic has reached critical levels!\nThings are about to get weird, Commander.\nBuild your shelter quickly!")
+end
+
 GG.Announcements = {Say = SendAnnouncement, MapMarker = SendMapMarker, PlaySound = PlaySound}
