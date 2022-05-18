@@ -1,7 +1,7 @@
 function gadget:GetInfo()
 	return {
 		name      = "Finnish Flag Announcer",
-		desc      = "Handles Announcements",
+		desc      = "Handles the Unsynced stuff.",
 		author    = "Shaman",
 		date      = "17 May 2022",
 		license   = "CC-0",
@@ -17,6 +17,7 @@ if not gadgetHandler:IsSyncedCode() then
 	local spGetSpectatingState = Spring.GetSpectatingState
 	local spMarkerAddPoint = Spring.MarkerAddPoint
 	local spPlaySoundFile = Spring.PlaySoundFile
+	local spSetTeamColor = Spring.SetTeamColor
 	
 	local function SendMapMarker(_, x, z, text, specsreceive, playersreceive)
 		local y = spGetGroundHeight(x, z)
@@ -39,10 +40,15 @@ if not gadgetHandler:IsSyncedCode() then
 		spPlaySoundFile(file, vol)
 	end
 	
+	local function SetTeamColor(_, teamID, r, g, b) -- takes 0 - 255 for each.
+		spSetTeamColor(teamID, r/255, g/255, b/255)
+	end
+	
 	function gadget:Initialize()
 		gadgetHandler:AddSyncAction("sendmapmarker", SendMapMarker)
 		gadgetHandler:AddSyncAction("sendannouncementtospecs", SendAnnouncementToSpecs)
 		gadgetHandler:AddSyncAction("playsound", PlaySound)
+		gadgetHandler:AddSyncAction("setteamcolor", SetTeamColor)
 	end
 	return
 end
@@ -63,8 +69,12 @@ local function PlaySound(file, vol)
 	SendToUnsynced("playsound", file, vol)
 end
 
+local function SetTeamColor(teamID, r, b, g)
+	SendToUnsynced("setteamcolor", teamID, r, b, g)
+end
+
 function gadget:GameStart()
 	SendAnnouncement("Warning: Coffee Magic has reached critical levels!\nThings are about to get weird, Commander.\nBuild your shelter quickly!")
 end
 
-GG.Announcements = {Say = SendAnnouncement, MapMarker = SendMapMarker, PlaySound = PlaySound}
+GG.Announcements = {SetTeamColor = SetTeamColor, Say = SendAnnouncement, MapMarker = SendMapMarker, PlaySound = PlaySound}
